@@ -1,0 +1,6 @@
+{
+  "name": "III. Multi-Agent Projektový Orchestrátor",
+  "description": "A sophisticated multi-agent system for project orchestration, demonstrating user request interpretation, team formation, execution planning, and documentation generation.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
