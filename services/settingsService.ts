@@ -15,6 +15,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
         },
         apiCallDelay: 1000,
         apiKey: '',
+        groqApiKey: '',
     }
 };
 

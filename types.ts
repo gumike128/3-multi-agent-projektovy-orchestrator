@@ -200,6 +200,7 @@ export interface AISettings {
     modelParams: AIModelParams;
     apiCallDelay: number;
     apiKey: string;
+    groqApiKey: string;
 }
 
 export type AIAssistantDisplayMode = 'none' | 'fab' | 'tab' | 'sidebar-left' | 'sidebar-right';

@@ -46,6 +46,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose }) => {
     const [settings, setSettings] = useState<AppSettings>(initialSettings);
     const [activeTab, setActiveTab] = useState<SettingsTab>('general');
     const [showApiKey, setShowApiKey] = useState(false);
+    const [showGroqApiKey, setShowGroqApiKey] = useState(false);
     const apiKeyExists = Boolean(settings.ai.apiKey?.trim());
 
     const handleGeneralChange = (field: string, value: any) => {
@@ -201,6 +202,36 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose }) => {
                                     className="mt-2 text-xs font-semibold text-slate-300 hover:text-white"
                                 >
                                     {UI_STRINGS.apiKeyClearButton}
+                                </button>
+                            </FormField>
+
+                            <FormField label={UI_STRINGS.groqApiKeyInputLabel} htmlFor="groq-api-key-input" description={UI_STRINGS.groqApiKeyInputHelp}>
+                                <div className="mt-1 flex gap-2">
+                                    <input
+                                        id="groq-api-key-input"
+                                        type={showGroqApiKey ? 'text' : 'password'}
+                                        value={settings.ai.groqApiKey}
+                                        onChange={(e) => handleAIChange('groqApiKey', e.target.value)}
+                                        placeholder={UI_STRINGS.groqApiKeyInputPlaceholder}
+                                        className="w-full p-2 bg-slate-700 border border-slate-600 rounded-lg text-slate-100 focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
+                                        autoComplete="off"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowGroqApiKey(prev => !prev)}
+                                        className="px-3 rounded-lg bg-slate-700 hover:bg-slate-600 border border-slate-600"
+                                        aria-label={showGroqApiKey ? 'Skryť Groq API kľúč' : 'Zobraziť Groq API kľúč'}
+                                        title={showGroqApiKey ? 'Skryť Groq API kľúč' : 'Zobraziť Groq API kľúč'}
+                                    >
+                                        {showGroqApiKey ? <EyeSlashIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
+                                    </button>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => handleAIChange('groqApiKey', '')}
+                                    className="mt-2 text-xs font-semibold text-slate-300 hover:text-white"
+                                >
+                                    {UI_STRINGS.groqApiKeyClearButton}
                                 </button>
                             </FormField>
 
