@@ -28,6 +28,7 @@ Toto je prioritizovaný zoznam úloh na vylepšenie aplikácie na základe vykon
 - [x] **Nová Funkcia:** Pridať možnosť vložiť používateľský Gemini API kľúč v Nastaveniach (API tab), uložiť ho lokálne a používať ho pri AI volaniach.
 
 - [x] **Textová Oprava API hlášky:** Upraviť hlášku pre chýbajúci API kľúč tak, aby odkazovala na Nastavenia (API Kľúč) aj premennú prostredia `API_KEY`, a zjednotiť fallback správanie aj v `aiAssistantService.ts`.
+- [x] **Dokumentácia Deploymentu:** Doplniť README a samostatnú dokumentáciu pre Vercel + Groq integráciu (`GROQ_API_KEY`) vrátane usage example.
 ## TODO List - Opravy na Zabezpečenie Funkčnosti Aplikácie
 
 Tento zoznam obsahuje úlohy potrebné na opravu aktuálnych problémov a zabezpečenie správneho fungovania aplikácie na základe analýzy kódu a chýb.
