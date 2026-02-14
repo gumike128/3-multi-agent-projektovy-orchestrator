@@ -69,7 +69,7 @@ const AppContent: React.FC = () => {
         switch (activeTab) {
             case 'overview':
                 return (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 animate-fade-in">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 sm:gap-8 animate-fade-in">
                         <InterpretedDetailsCard 
                             details={interpretedDetails}
                             projectTitle={projectTitle}
@@ -82,7 +82,7 @@ const AppContent: React.FC = () => {
                  return (
                     <div className="animate-fade-in">
                         {team && initialAgentTasksCompleted && !newExecutionPlan && !isLoadingPlan && (
-                            <div className="my-6 sm:my-8 flex justify-center text-center p-8 bg-slate-800 rounded-lg">
+                            <div className="glass-panel my-6 flex justify-center p-8 text-center sm:my-8">
                                 <div>
                                     <h3 className="text-xl font-semibold text-slate-100">Prvý krok je hotový!</h3>
                                     <p className="text-slate-400 mt-2 mb-4 max-w-xl mx-auto">Tím agentov spracoval počiatočné úlohy. Teraz môžete vygenerovať podrobný exekučný plán pre váš projekt.</p>
@@ -115,7 +115,7 @@ const AppContent: React.FC = () => {
                         {phaseDocuments ? (
                             <DocumentationWorkspace documents={phaseDocuments} onSaveChanges={handleSavePhaseDocumentChanges} />
                         ) : (
-                             <div className="text-center text-slate-400 italic mt-6 p-8 bg-slate-800 rounded-lg">
+                             <div className="glass-panel mt-6 p-8 text-center italic text-slate-300">
                                 <RectangleGroupIcon className="mx-auto h-12 w-12 text-slate-500" />
                                 <h3 className="mt-2 text-lg font-medium">{UI_STRINGS.noDocumentsGenerated}</h3>
                                 <p className="mt-1 text-sm text-slate-500">Vygenerujte exekučný plán pre vytvorenie dokumentov.</p>
@@ -140,7 +140,12 @@ const AppContent: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-sky-900 text-slate-100">
+        <div className="relative flex min-h-screen flex-col overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-cyan-950 text-slate-100">
+            <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40">
+                <div className="absolute left-[-10rem] top-[-8rem] h-72 w-72 rounded-full bg-cyan-500/20 blur-3xl" />
+                <div className="absolute right-[-8rem] top-1/3 h-80 w-80 rounded-full bg-fuchsia-500/15 blur-3xl" />
+                <div className="absolute bottom-[-10rem] left-1/3 h-80 w-80 rounded-full bg-emerald-400/10 blur-3xl" />
+            </div>
             <Header onNewRequest={resetApp} />
             <ModalManager />
           
@@ -160,7 +165,7 @@ const AppContent: React.FC = () => {
                     ${assistantDisplayMode === 'sidebar-left' && isAssistantOpen ? 'ml-0 md:ml-[28rem]' : ''}
                     ${assistantDisplayMode === 'sidebar-right' && isAssistantOpen ? 'mr-0 md:mr-[28rem]' : ''}
                 `}>
-                    <div className="flex-grow container mx-auto px-2 sm:px-4 py-6 sm:py-8 overflow-y-auto">
+                    <div className="relative z-10 flex-grow container mx-auto w-full max-w-[1440px] px-3 py-6 sm:px-6 sm:py-8 overflow-y-auto">
                         {activeView === 'home' && !isLoading && <ProjectInputForm />}
     
                         <LoadingSpinner isLoading={isLoading || isLoadingPlan} text={loadingMessage} />

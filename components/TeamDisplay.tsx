@@ -10,23 +10,20 @@ interface TeamDisplayProps {
 
 export const TeamDisplay: React.FC<TeamDisplayProps> = ({ team }) => {
   if (!team || team.length === 0) {
-    return null; 
+    return null;
   }
 
   return (
-    <div className="bg-slate-800 p-4 sm:p-6 rounded-xl shadow-2xl h-full">
-      <h3 className="text-xl font-semibold text-sky-400 mb-4 flex items-center">
-        <UsersIcon className="h-6 w-6 mr-2 text-sky-400" />
+    <section className="glass-panel h-full p-4 sm:p-6">
+      <h3 className="mb-4 flex items-center text-xl font-semibold text-sky-200">
+        <UsersIcon className="mr-2 h-6 w-6 text-sky-300" />
         {UI_STRINGS.teamComposition}
       </h3>
       <div className="space-y-4">
         {team.map((agent) => (
-          <AgentCard 
-            key={agent.id} 
-            agent={agent} 
-          />
+          <AgentCard key={agent.id} agent={agent} />
         ))}
       </div>
-    </div>
+    </section>
   );
 };
