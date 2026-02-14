@@ -18,16 +18,14 @@ const POPULAR_TASKS_FOR_ROLE: Record<AgentRole, string[]> = {
 };
 
 const getApiKey = (): string | null => {
+  const settings = getSettings();
+  if (typeof settings.ai.apiKey === 'string' && settings.ai.apiKey.trim() !== '') {
+    return settings.ai.apiKey.trim();
+  }
+
   const apiKey = process.env.API_KEY;
   if (typeof apiKey === 'string' && apiKey.trim() !== '') {
     return apiKey;
-  }
-  // Fallback to settings if environment variable is not set
-  const settings = getSettings();
-  // Type assertion to avoid TypeScript error, assuming settings might have apiKey
-  const aiSettings = settings.ai as any;
-  if (settings && aiSettings && aiSettings.apiKey) {
-    return aiSettings.apiKey;
   }
   console.warn("API key not found in environment or settings. AI features will be disabled.");
   // Notify user through UI if possible

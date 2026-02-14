@@ -14,6 +14,8 @@ export const DEFAULT_SETTINGS: AppSettings = {
             topK: 32,
         },
         apiCallDelay: 1000,
+        apiKey: '',
+        groqApiKey: '',
     }
 };
 
@@ -65,6 +67,11 @@ export const resetSettings = (): void => {
 };
 
 export const getApiKeyStatus = (): boolean => {
-    const apiKey = process.env.API_KEY;
-    return typeof apiKey === 'string' && apiKey.trim() !== '';
+    const envApiKey = process.env.API_KEY;
+    if (typeof envApiKey === 'string' && envApiKey.trim() !== '') {
+        return true;
+    }
+
+    const settings = getSettings();
+    return typeof settings.ai.apiKey === 'string' && settings.ai.apiKey.trim() !== '';
 };

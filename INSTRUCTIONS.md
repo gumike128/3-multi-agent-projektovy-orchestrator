@@ -23,7 +23,13 @@ Toto je prioritizovaný zoznam úloh na vylepšenie aplikácie na základe vykon
 - [x] **Stredná Priorita:** Refaktorovať správu modálnych okien pomocou React Portals a centralizovaného systému.
 - [x] **Nízka Priorita:** Po refaktoringu stavu prehodnotiť a optimalizovať použitie `useCallback` a `React.memo`.
 - [x] **Nová Funkcia:** Implementovať generovanie a správu "Mini-Aplikácií" v rámci projektu. (Overené, funkcionalita na generovanie a správu mini-aplikácií je už implementovaná v `MiniAppWorkspace.tsx` a `ProjectContext.tsx`.)
+- [x] **UX/UI Modernizácia 2025:** Zaviesť responzívny „Aurora Command Center“ vizuálny refresh (glass panely, konzistentné CTA, onboarding hinty, modernizovaný header a footer) s ohľadom na WCAG a mobile-first čitateľnosť.
+- [x] **Kritická Oprava Runtime:** Obnoviť zobrazenie aplikácie po regresii (pridať chýbajúci export `useProject` v `ProjectContext` a opraviť `index.html` na štandardný Vite entrypoint bez konfliktného dynamic importmap bootstrappingu).
+- [x] **Nová Funkcia:** Pridať možnosť vložiť používateľský Gemini API kľúč v Nastaveniach (API tab), uložiť ho lokálne a používať ho pri AI volaniach.
 
+- [x] **Textová Oprava API hlášky:** Upraviť hlášku pre chýbajúci API kľúč tak, aby odkazovala na Nastavenia (API Kľúč) aj premennú prostredia `API_KEY`, a zjednotiť fallback správanie aj v `aiAssistantService.ts`.
+- [x] **Dokumentácia Deploymentu:** Doplniť README a samostatnú dokumentáciu pre Vercel + Groq integráciu (`GROQ_API_KEY`) vrátane usage example.
+- [x] **Nová Funkcia:** Do Nastavení (API tab) pridať možnosť vložiť, zobraziť/skryť a vymazať `Groq API kľúč` (`groqApiKey`) s lokálnym uložením.
 ## TODO List - Opravy na Zabezpečenie Funkčnosti Aplikácie
 
 Tento zoznam obsahuje úlohy potrebné na opravu aktuálnych problémov a zabezpečenie správneho fungovania aplikácie na základe analýzy kódu a chýb.

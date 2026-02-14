@@ -679,3 +679,12 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
     return <ProjectContext.Provider value={contextValue}>{children}</ProjectContext.Provider>;
 };
+
+
+export const useProject = (): ProjectContextType => {
+    const context = useContext(ProjectContext);
+    if (!context) {
+        throw new Error('useProject must be used within a ProjectProvider');
+    }
+    return context;
+};

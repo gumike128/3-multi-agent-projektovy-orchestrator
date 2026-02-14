@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { UI_STRINGS, PROJECT_TYPES_EXAMPLES, GENERIC_ICONS } from '@/constants';
 import { PlayIcon } from '@heroicons/react/24/solid';
+import { SparklesIcon } from '@heroicons/react/24/outline';
 import { refineProjectDescription } from '@/services/aiAssistantService';
 import { useProject } from '@/contexts/ProjectContext';
 import { useUI } from '@/contexts/UIContext';
@@ -10,16 +11,15 @@ export const ProjectInputForm: React.FC = () => {
   const [description, setDescription] = useState<string>('');
   const [isRefining, setIsRefining] = useState(false);
   const [refineError, setRefineError] = useState<string | null>(null);
-  
+
   const { handleProjectSubmit } = useProject();
   const { isLoading } = useUI();
 
   const randomExamples = useMemo(() => {
-    // Shuffle array and take first 3
     return [...PROJECT_TYPES_EXAMPLES]
       .sort(() => 0.5 - Math.random())
       .slice(0, 3);
-  }, []); // Empty dependency array ensures this runs only once per component mount
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,43 +31,57 @@ export const ProjectInputForm: React.FC = () => {
   const handleExampleClick = (example: string) => {
     setDescription(example);
     if (!title.trim()) {
-        const exampleTitle = example.split(' ').slice(0, 4).join(' ') + "...";
-        setTitle(exampleTitle);
+      const exampleTitle = `${example.split(' ').slice(0, 4).join(' ')}...`;
+      setTitle(exampleTitle);
     }
   };
-  
+
   const handleRefineDescription = async () => {
     if (!description.trim() || isRefining) return;
     setIsRefining(true);
     setRefineError(null);
     try {
-        const refined = await refineProjectDescription(description);
-        setDescription(refined);
+      const refined = await refineProjectDescription(description);
+      setDescription(refined);
     } catch (error) {
-        console.error("Failed to refine description:", error);
-        setRefineError(error instanceof Error ? error.message : "Vylepšenie zlyhalo.");
+      console.error('Failed to refine description:', error);
+      setRefineError(error instanceof Error ? error.message : 'Vylepšenie zlyhalo.');
     } finally {
-        setIsRefining(false);
+      setIsRefining(false);
     }
   };
 
   const RefineIcon = GENERIC_ICONS.Refine;
 
   return (
-    <div className="bg-slate-800 p-8 rounded-xl shadow-2xl space-y-6">
-      <h2 className="text-3xl font-bold text-center text-sky-400 mb-6">{UI_STRINGS.appName}</h2>
-      <p className="text-slate-300 text-center mb-8">
-        Popíšte vašu projektovú požiadavku. Náš inteligentný orchestrátor analyzuje vstup, zostaví tím špecializovaných agentov a vygeneruje komplexný plán realizácie.
-      </p>
-      <form onSubmit={handleSubmit} className="space-y-6">
+    <section className="glass-panel mx-auto max-w-5xl p-5 sm:p-8">
+      <div className="mb-8 grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
         <div>
-          <label htmlFor="projectTitle" className="block text-sm font-medium text-sky-300 mb-1">
+          <h2 className="section-title">{UI_STRINGS.appName}</h2>
+          <p className="mt-3 max-w-2xl text-sm text-slate-300 sm:text-base">
+            Premeníme vašu myšlienku na plán realizácie s jasnou štruktúrou, tímom agentov a postupnými krokmi.
+            Návrh je optimalizovaný pre rýchle zadanie, čitateľnosť a responzívne používanie.
+          </p>
+        </div>
+        <div className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-slate-200">
+          <p className="mb-2 flex items-center gap-2 font-semibold text-sky-200"><SparklesIcon className="h-4 w-4" /> UX quick-start</p>
+          <ul className="space-y-1 text-slate-300">
+            <li>• Najprv názov a cieľ projektu.</li>
+            <li>• Potom kontext a požiadavky v 3–5 vetách.</li>
+            <li>• AI asistenta použite na vylepšenie textu.</li>
+          </ul>
+        </div>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-6" aria-label="Project setup form">
+        <div>
+          <label htmlFor="projectTitle" className="mb-2 block text-sm font-medium text-sky-200">
             {UI_STRINGS.projectTitleLabel}
           </label>
           <input
             type="text"
             id="projectTitle"
-            className="w-full p-3 bg-slate-700 border border-slate-600 rounded-lg text-slate-100 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition duration-150 ease-in-out"
+            className="w-full rounded-xl border border-white/15 bg-slate-900/70 p-3 text-slate-100 placeholder:text-slate-400 focus:border-sky-400 focus:ring-2 focus:ring-sky-400/40"
             placeholder={UI_STRINGS.projectTitlePlaceholder}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -75,30 +89,31 @@ export const ProjectInputForm: React.FC = () => {
             required
           />
         </div>
+
         <div>
-          <div className="flex justify-between items-center mb-1">
-            <label htmlFor="projectDescription" className="block text-sm font-medium text-sky-300">
+          <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+            <label htmlFor="projectDescription" className="block text-sm font-medium text-sky-200">
               {UI_STRINGS.projectDescriptionLabel}
             </label>
             <button
-                type="button"
-                onClick={handleRefineDescription}
-                disabled={isLoading || isRefining || !description.trim()}
-                className="flex items-center text-xs font-semibold text-purple-300 hover:text-purple-200 disabled:text-slate-500 disabled:cursor-not-allowed transition-colors"
+              type="button"
+              onClick={handleRefineDescription}
+              disabled={isLoading || isRefining || !description.trim()}
+              className="inline-flex items-center text-xs font-semibold text-purple-300 transition-colors hover:text-purple-200 disabled:cursor-not-allowed disabled:text-slate-500"
             >
-                {isRefining ? (
-                     <svg className="animate-spin h-4 w-4 mr-1.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                ) : (
-                    <RefineIcon className="h-4 w-4 mr-1.5 text-purple-400"/>
-                )}
-                {isRefining ? UI_STRINGS.aiAssistantRefining : UI_STRINGS.aiAssistantRefineDescription}
+              {isRefining ? (
+                <svg className="mr-1.5 h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+              ) : (
+                <RefineIcon className="mr-1.5 h-4 w-4 text-purple-400" />
+              )}
+              {isRefining ? UI_STRINGS.aiAssistantRefining : UI_STRINGS.aiAssistantRefineDescription}
             </button>
           </div>
-          {refineError && <p className="text-xs text-red-400 mb-1">{refineError}</p>}
+          {refineError && <p className="mb-1 text-xs text-red-400">{refineError}</p>}
           <textarea
             id="projectDescription"
             rows={6}
-            className="w-full p-3 bg-slate-700 border border-slate-600 rounded-lg text-slate-100 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition duration-150 ease-in-out"
+            className="w-full rounded-xl border border-white/15 bg-slate-900/70 p-3 text-slate-100 placeholder:text-slate-400 focus:border-sky-400 focus:ring-2 focus:ring-sky-400/40"
             placeholder={UI_STRINGS.projectDescriptionPlaceholder}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -106,31 +121,32 @@ export const ProjectInputForm: React.FC = () => {
             required
           />
         </div>
-        <div className="text-sm text-slate-400">
-          <p className="font-semibold mb-1">Napríklad (pre popis):</p>
-          <ul className="list-disc list-inside space-y-1">
+
+        <div className="rounded-xl border border-white/10 bg-slate-900/40 p-4 text-sm text-slate-300">
+          <p className="mb-2 font-semibold text-slate-200">Napríklad (pre popis):</p>
+          <div className="grid gap-2 sm:grid-cols-3">
             {randomExamples.map((ex, idx) => (
-              <li key={idx}>
-                <button 
-                  type="button" 
-                  onClick={() => handleExampleClick(ex)} 
-                  className="text-sky-400 hover:text-sky-300 hover:underline disabled:text-slate-500 disabled:no-underline"
-                  disabled={isLoading}
-                >
-                  {ex}
-                </button>
-              </li>
+              <button
+                key={idx}
+                type="button"
+                onClick={() => handleExampleClick(ex)}
+                className="rounded-lg border border-sky-300/20 bg-sky-500/10 px-3 py-2 text-left text-xs text-sky-100 transition hover:bg-sky-500/20 disabled:cursor-not-allowed disabled:opacity-50"
+                disabled={isLoading}
+              >
+                {ex}
+              </button>
             ))}
-          </ul>
+          </div>
         </div>
+
         <button
           type="submit"
-          className="w-full flex items-center justify-center bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
+          className="btn-primary w-full py-3 text-base"
           disabled={isLoading || !description.trim() || !title.trim()}
         >
           {isLoading ? (
             <>
-              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <svg className="-ml-1 mr-3 h-5 w-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
@@ -138,12 +154,12 @@ export const ProjectInputForm: React.FC = () => {
             </>
           ) : (
             <>
-              <PlayIcon className="h-6 w-6 mr-2" />
+              <PlayIcon className="mr-2 h-6 w-6" />
               {UI_STRINGS.submitButton}
             </>
           )}
         </button>
       </form>
-    </div>
+    </section>
   );
 };

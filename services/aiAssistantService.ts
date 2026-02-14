@@ -7,9 +7,17 @@ import { handleGeminiError } from '@/services/geminiService';
 
 // Helper to get API key or throw error
 const getApiKeyOrThrow = (): string => {
+    const settings = getSettings();
+    if (typeof settings.ai.apiKey === 'string' && settings.ai.apiKey.trim() !== '') {
+        return settings.ai.apiKey.trim();
+    }
+
     const apiKey = process.env.API_KEY;
-    if (!apiKey) throw new Error(UI_STRINGS.apiKeyNotConfigured);
-    return apiKey;
+    if (typeof apiKey === 'string' && apiKey.trim() !== '') {
+        return apiKey;
+    }
+
+    throw new Error(UI_STRINGS.apiKeyNotConfigured);
 };
 
 // Helper for parsing JSON safely
