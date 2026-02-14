@@ -24,6 +24,7 @@ Toto je prioritizovaný zoznam úloh na vylepšenie aplikácie na základe vykon
 - [x] **Nízka Priorita:** Po refaktoringu stavu prehodnotiť a optimalizovať použitie `useCallback` a `React.memo`.
 - [x] **Nová Funkcia:** Implementovať generovanie a správu "Mini-Aplikácií" v rámci projektu. (Overené, funkcionalita na generovanie a správu mini-aplikácií je už implementovaná v `MiniAppWorkspace.tsx` a `ProjectContext.tsx`.)
 - [x] **UX/UI Modernizácia 2025:** Zaviesť responzívny „Aurora Command Center“ vizuálny refresh (glass panely, konzistentné CTA, onboarding hinty, modernizovaný header a footer) s ohľadom na WCAG a mobile-first čitateľnosť.
+- [x] **Kritická Oprava Runtime:** Obnoviť zobrazenie aplikácie po regresii (pridať chýbajúci export `useProject` v `ProjectContext` a opraviť `index.html` na štandardný Vite entrypoint bez konfliktného dynamic importmap bootstrappingu).
 
 ## TODO List - Opravy na Zabezpečenie Funkčnosti Aplikácie
 
