@@ -199,6 +199,7 @@ export interface AIModelParams {
 export interface AISettings {
     modelParams: AIModelParams;
     apiCallDelay: number;
+    apiKey: string;
 }
 
 export type AIAssistantDisplayMode = 'none' | 'fab' | 'tab' | 'sidebar-left' | 'sidebar-right';

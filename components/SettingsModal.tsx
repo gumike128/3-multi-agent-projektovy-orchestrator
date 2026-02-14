@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import type { AppSettings, SettingsTab, AIAssistantDisplayMode, HeaderButtonMode } from '@/types';
 import { UI_STRINGS, GENERIC_ICONS } from '@/constants';
-import { getApiKeyStatus } from '@/services/settingsService';
 import { useSettings } from '@/contexts/SettingsContext';
-import { XMarkIcon, PaintBrushIcon, CpuChipIcon, KeyIcon, ArrowUturnLeftIcon, InformationCircleIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon, PaintBrushIcon, CpuChipIcon, KeyIcon, ArrowUturnLeftIcon, InformationCircleIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 interface SettingsModalProps {
   onClose: () => void;
@@ -46,11 +45,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose }) => {
     const { settings: initialSettings, saveSettings, resetSettingsToDefaults } = useSettings();
     const [settings, setSettings] = useState<AppSettings>(initialSettings);
     const [activeTab, setActiveTab] = useState<SettingsTab>('general');
-    const [apiKeyExists, setApiKeyExists] = useState(false);
-
-    useEffect(() => {
-        setApiKeyExists(getApiKeyStatus());
-    }, []);
+    const [showApiKey, setShowApiKey] = useState(false);
+    const apiKeyExists = Boolean(settings.ai.apiKey?.trim());
 
     const handleGeneralChange = (field: string, value: any) => {
         setSettings(s => ({ ...s, general: { ...s.general, [field]: value } }));
@@ -177,11 +173,39 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose }) => {
                                     {apiKeyExists ? UI_STRINGS.apiKeyDetected : UI_STRINGS.apiKeyNotDetected}
                                 </p>
                             </div>
+
+                            <FormField label={UI_STRINGS.apiKeyInputLabel} htmlFor="api-key-input" description={UI_STRINGS.apiKeyInputHelp}>
+                                <div className="mt-1 flex gap-2">
+                                    <input
+                                        id="api-key-input"
+                                        type={showApiKey ? 'text' : 'password'}
+                                        value={settings.ai.apiKey}
+                                        onChange={(e) => handleAIChange('apiKey', e.target.value)}
+                                        placeholder={UI_STRINGS.apiKeyInputPlaceholder}
+                                        className="w-full p-2 bg-slate-700 border border-slate-600 rounded-lg text-slate-100 focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
+                                        autoComplete="off"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowApiKey(prev => !prev)}
+                                        className="px-3 rounded-lg bg-slate-700 hover:bg-slate-600 border border-slate-600"
+                                        aria-label={showApiKey ? 'Skryť API kľúč' : 'Zobraziť API kľúč'}
+                                        title={showApiKey ? 'Skryť API kľúč' : 'Zobraziť API kľúč'}
+                                    >
+                                        {showApiKey ? <EyeSlashIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
+                                    </button>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => handleAIChange('apiKey', '')}
+                                    className="mt-2 text-xs font-semibold text-slate-300 hover:text-white"
+                                >
+                                    {UI_STRINGS.apiKeyClearButton}
+                                </button>
+                            </FormField>
+
                              <div>
                                 <h5 className="font-semibold text-md mb-2">{UI_STRINGS.apiKeyHowTo}</h5>
-                                <p className="text-sm text-slate-300">
-                                   API kľúč sa načíta bezpečne z premenných prostredia na strane servera. Táto aplikácia ho nikdy neukladá ani nevyžaduje jeho zadanie v používateľskom rozhraní.
-                                </p>
                                 <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="inline-block mt-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition text-sm">
                                     {UI_STRINGS.apiKeyGetHere}
                                 </a>
